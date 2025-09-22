@@ -1,7 +1,7 @@
 <?php
-	require _once 'config.php";
-Squery = "SELECT ' FROM users*:
-$users = $conn-›query($query);
+require_once 'config.php';
+$query = "SELECT * FROM users";
+$users = $conn->query($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@ $users = $conn-›query($query);
 	<h1>List of Users V7</h1>
 	<ul>
 		<?php foreach ($users as $user): ?>
-	<li><?= htmlspecialchars($user['name']) ?> (<?= htmlspecialchars($user'email']) ?>)</li>
+	<li><?= htmlspecialchars($user['name']) ?> (<?= htmlspecialchars($user['email']) ?>)</li>
 	<?php endforeach; ?>
   </ul>
 </body»
