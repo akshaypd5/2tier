@@ -1,0 +1,48 @@
+networks:
+  webnet:
+    driver: bridge
+volumes:
+  mysql_data:
+  jenkins-data:
+
+services:
+  website:
+    build: .
+    container_name: website
+    ports:
+      - "80:80"
+    volumes:
+      - ./website:/var/www/html
+    networks:
+      - webnet
+    depends_on:
+      - mysql-db
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dbpass
+      MYSQL_DATABASE: dbname
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d
+    networks:
+      - webnet
+  jenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - webnet
+
+    
